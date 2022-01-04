@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld'
+//import HelloWorld from './components/HelloWorld'
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import FlightBooking from './components/FlightBooking';
@@ -17,7 +17,7 @@ import FlightBooking from './components/FlightBooking';
 export default {
   name: 'App',
   components: {
-    HelloWorld,
+    // HelloWorld,
     Navbar,
     Footer,
     FlightBooking,
