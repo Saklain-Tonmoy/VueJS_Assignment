@@ -4,10 +4,10 @@
     <div class="col-md-8">
       <div class="row">
         <div class="col-md-3 mb-4">
-          <input type="text" class="form-control align-middle" placeholder="Leaving From"/>
+          <input v-model="leaving_from" @keyup="check_length()" type="text" class="form-control align-middle" placeholder="Leaving From"/>
         </div>
         <div class="col-md-3 mb-4">
-          <input type="text" class="form-control" placeholder="Going To" />
+          <input v-model="going_to" type="text" class="form-control" placeholder="Going To" />
         </div>
         <div class="col-md-4 mb-4">
           <HotelDatePicker format="DD/MM/YYYY" :i18n="ptBr"></HotelDatePicker>
@@ -64,15 +64,28 @@ export default {
         'December',
       ],
       tooltip: {
-      halfDayCheckIn: 'Available CheckIn',
-      halfDayCheckOut: 'Available CheckOut',
-      saturdayToSaturday: 'Only Saturday to Saturday',
-      sundayToSunday: 'Only Sunday to Sunday',
-      minimumRequiredPeriod: '%{minNightInPeriod} %{night} minimum.',
-  },
-    }
+        halfDayCheckIn: 'Available CheckIn',
+        halfDayCheckOut: 'Available CheckOut',
+        saturdayToSaturday: 'Only Saturday to Saturday',
+        sundayToSunday: 'Only Sunday to Sunday',
+        minimumRequiredPeriod: '%{minNightInPeriod} %{night} minimum.',
+      }
+    },
+
+    leaving_from: "",
+    going_to: "",
 
     }
+  },
+
+  methods: {
+    check_length(str) {
+      console.log(this.leaving_from);
+    },
+  },
+
+  computed: {
+
   },
   
 }
