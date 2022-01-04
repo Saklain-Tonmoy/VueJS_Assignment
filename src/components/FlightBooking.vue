@@ -11,7 +11,7 @@
           <input v-model="going_to" type="text" class="form-control" placeholder="Going To" />
         </div>
         <div class="col-md-4 mb-4">
-          <HotelDatePicker format="DD/MM/YYYY" :i18n="ptBr" id="check-in-date"></HotelDatePicker>
+          <HotelDatePicker @check-in-changed="checkIn" @check-out-changed="checkOut" format="DD/MM/YYYY" :i18n="ptBr" id="check-in-date"></HotelDatePicker>
         </div>
         <div class="col-2">
         <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.74rem 0.74rem; background-color: rgb(10, 66, 117); border: none;">Search</button>
@@ -73,7 +73,10 @@ export default {
 
     leaving_from: "",
     going_to: "",
-    checkIn: "",
+    date: {
+      checkInDate: null,
+      checkOutDate: null,
+    }
 
     }
   },
@@ -82,6 +85,20 @@ export default {
     leaving_from(newLeaving_from, oldLeaving_from) {
       if((newLeaving_from.length >= oldLeaving_from.length) && (newLeaving_from.length >=3)) {
         console.log(this.leaving_from);
+      }
+    },
+
+    checkInDate(newCheckInDate, oldCheckInDate) {
+      if((newCheckInDate != oldCheckInDate)) {
+        this.date.checkInDate = newCheckInDate;
+        console.log(this.checkInDate);
+      }
+    },
+
+    checkOutDate(newCheckOutDate, oldCheckOutDate) {
+      if((newCheckOutDate != oldCheckOutDate)) {
+        this.date.checkOutDate = newCheckOutDate;
+        console.log(this.checkOutDate);
       }
     },
 
@@ -94,6 +111,17 @@ export default {
     },
     showData() {
       console.log("Leaving From: " + this.leaving_from + " Going to: " + this.going_to);
+    },
+    showDate() {
+      console.log("Check-In date : " + this.date.checkInDate + " " + "Check-Out date : " + this.date.checkOutDate);
+    },
+    checkIn(val) {
+      this.date.checkInDate = val.toString();
+      console.log(this.date.checkInDate);
+    },
+    checkOut(val) {
+      this.date.checkOutDate = val.toString();
+      console.log(this.date.checkOutDate);
     }
   },
 
