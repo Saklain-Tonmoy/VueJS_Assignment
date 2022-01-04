@@ -10,10 +10,10 @@
           <input type="text" class="form-control" placeholder="Going To" />
         </div>
         <div class="col-md-4 mb-4">
-          <HotelDatePicker format="DD/MM/YYYY"></HotelDatePicker>
+          <HotelDatePicker format="DD/MM/YYYY" :i18n="ptBr"></HotelDatePicker>
         </div>
         <div class="col-2">
-        <button type="button" class="btn btn-primary" style="width: 100%; padding: 0.74rem 0.74rem;">Search</button>
+        <button type="button" class="btn btn-primary" style="width: 100%; padding: 0.74rem 0.74rem; background-color: rgb(10, 66, 117); border: none;">Search</button>
       </div>
       </div>
       
@@ -29,11 +29,52 @@
 import HotelDatePicker from 'vue-hotel-datepicker';
 import 'vue-hotel-datepicker/dist/vueHotelDatepicker.css';
 
+document.getElementsByClassName(".vhd__datepicker__input").innerText = "Test";
+
 export default {
   name: 'FlightBooking',
   components: {
     HotelDatePicker,
-  }
+  },
+
+  data() {
+    return {
+      ptBr: {
+      night: 'Night',
+      nights: 'Nights',
+      week: 'Week',
+      weeks: 'Weeks',
+      'day-names': ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'],
+      // 'check-in': 'Departing On',
+      // 'check-out': 'Returning On',
+      'check-in': 'Check-in',
+      'check-out': 'Check-Out',
+      'month-names': [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December',
+      ],
+      tooltip: {
+      halfDayCheckIn: 'Available CheckIn',
+      halfDayCheckOut: 'Available CheckOut',
+      saturdayToSaturday: 'Only Saturday to Saturday',
+      sundayToSunday: 'Only Sunday to Sunday',
+      minimumRequiredPeriod: '%{minNightInPeriod} %{night} minimum.',
+  },
+    }
+
+    }
+  },
+  
 }
 </script>
 
