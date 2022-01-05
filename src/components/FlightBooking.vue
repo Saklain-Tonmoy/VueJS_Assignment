@@ -103,8 +103,8 @@ export default {
         "day-names": ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"],
         // 'check-in': 'Departing On',
         // 'check-out': 'Returning On',
-        "check-in": "Check-in",
-        "check-out": "Check-Out",
+        "check-in": "Departing On",
+        "check-out": "Returning On",
         "month-names": [
           "January",
           "February",
