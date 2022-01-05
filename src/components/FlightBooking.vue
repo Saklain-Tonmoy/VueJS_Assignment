@@ -14,7 +14,7 @@
                 required
                 id="input-field"
               />
-              <table v-show="isOpen">
+              <table v-show="isLeavingSuggestionOpen">
                 <tr>
                   <td
                     v-for="(value, index) in leaving_from_api_data"
@@ -26,19 +26,6 @@
                 </tr>
               </table>
             </div>
-            <!-- <div v-if="isOpen">
-              <table>
-                <tr>
-                  <td
-                    v-for="(value, index) in leaving_from_api_data"
-                    :key="index"
-                    @click="setLeavingFrom(index)"
-                  >
-                    {{ value.name }}
-                  </td>
-                </tr>
-              </table>
-            </div> -->
             <div class="col-md-3 mb-4">
               <input
                 v-model="going_to"
@@ -48,7 +35,17 @@
                 placeholder="Going To"
                 required
               />
-              {{ going_to_api_data }}
+              <table v-show="isGoingSuggestionOpen">
+                <tr>
+                  <td
+                    v-for="(value, index) in going_to_api_data"
+                    :key="index"
+                    @click="setGoingTo(index)"
+                  >
+                    {{ value.name }}
+                  </td>
+                </tr>
+              </table>
             </div>
             <div class="col-md-4 mb-4">
               <HotelDatePicker
@@ -59,7 +56,7 @@
                 required
               ></HotelDatePicker>
             </div>
-            <div class="col-2">
+            <div class="col-md-2 mb-4">
               <button
                 type="submit"
                 class="btn btn-primary"
@@ -80,19 +77,7 @@
         <img src="../assets/beach_650x450.jpg" width="100%" height="400" />
       </div>
     </div>
-    <!-- <div>
-      <p
-        v-for="(value, index) in leaving_from_api_data"
-        :key="index"
-        @click="
-          () => {
-            setLeavingFrom();
-          }
-        "
-      >
-        test
-      </p>
-    </div> -->
+
   </div>
 </template>
 
@@ -153,7 +138,8 @@ export default {
       going_to_api_data: null,
       selectedLeavingFromKey: null,
       selectedGoingToKey: null,
-      isOpen: false,
+      isLeavingSuggestionOpen: false,
+      isGoingSuggestionOpen: false,
     };
   },
 
@@ -176,19 +162,15 @@ export default {
     },
 
     setLeavingFrom(index) {
-      //this.leaving_from = this.leaving_from_api_data[index].name;
-      // console.log("clicked");
-      // this.selectedLeavingFromKey = value;
-      // console.log(selectedLeavingFromKey);
-      // this.leaving_from = value;
-      // this.results = this.items.filter(item => item.toLowerCase().indexOf(this.search.toLowerCase()) > -1);
-      // this.isOpen = false;
       console.log("set leaving from method hits");
       this.leaving_from = this.leaving_from_api_data[index].name;
-      this.isOpen = false;
-      // document
-      //   .getElementById("input-field")
-      //   .innerHTML(this.leaving_from_api_data[index].name);
+      this.isLeavingSuggestionOpen = false;
+    },
+
+    setGoingTo(index) {
+      console.log("set Going To method hits");
+      this.going_to = this.going_to_api_data[index].name;
+      this.isGoingSuggestionOpen = false;
     },
 
     showData() {
@@ -243,7 +225,7 @@ export default {
           if (response.data.response.length != 0) {
             console.log(response.data.response);
             this.leaving_from_api_data = response.data.response;
-            this.isOpen = true;
+            this.isLeavingSuggestionOpen = true;
           } else {
             this.leaving_from_api_data = null;
           }
@@ -264,6 +246,7 @@ export default {
           console.log(response.data.response.length);
           if (response.data.response.length != 0) {
             this.going_to_api_data = response.data.response;
+            this.isGoingSuggestionOpen = true;
           } else {
             this.going_to_api_data = null;
           }
