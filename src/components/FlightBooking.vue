@@ -7,37 +7,22 @@
             <div class="col-md-4 mb-4">
               <input
                 v-model="leaving_from"
-                
                 type="text"
                 class="form-control text-left"
                 placeholder="Leaving From"
                 required
                 id="input-field"
               />
-              <div>
-              <!-- <table v-show="isLeavingSuggestionOpen">
-                <tr>
-                  <td
-                    v-for="(value, index) in leaving_from_api_data"
-                    :key="index"
-                    @click="setLeavingFrom(index)"
-                  >
-                    {{ value.name }}
-                  </td>
-                </tr>
-              </table> -->
-              
-              </div>
-              <div class="suggestion-div" v-show="isLeavingSuggestionOpen">
-               
-                  <h6 class="suggestion-text"
-                    v-for="(value, index) in leaving_from_api_data"
-                    :key="index"
-                    @click="setLeavingFrom(index)"
-                  >
-                    {{ value.name }}
-                  </h6>
 
+              <div class="suggestion-div" v-show="isLeavingSuggestionOpen">
+                <h6
+                  class="suggestion-text"
+                  v-for="(value, index) in leaving_from_api_data"
+                  :key="index"
+                  @click="setLeavingFrom(index)"
+                >
+                  {{ value.name }}
+                </h6>
               </div>
             </div>
             <div class="col-md-4 mb-4">
@@ -48,26 +33,16 @@
                 placeholder="Going To"
                 required
               />
-              <!-- <table v-show="isGoingSuggestionOpen">
-                <tr>
-                  <td
-                    v-for="(value, index) in going_to_api_data"
-                    :key="index"
-                    @click="setGoingTo(index)"
-                  >
-                    {{ value.name }}
-                  </td>
-                </tr>
-              </table> -->
-              <div class="suggestion-div" v-show="isGoingSuggestionOpen">
 
-                  <h6 class="suggestion-text"
-                    v-for="(value, index) in going_to_api_data"
-                    :key="index"
-                    @click="setGoingTo(index)"
-                  >
-                    {{ value.name }}
-                  </h6>
+              <div class="suggestion-div" v-show="isGoingSuggestionOpen">
+                <h6
+                  class="suggestion-text"
+                  v-for="(value, index) in going_to_api_data"
+                  :key="index"
+                  @click="setGoingTo(index)"
+                >
+                  {{ value.name }}
+                </h6>
               </div>
             </div>
             <div class="col-md-3 mb-4 p-0">
@@ -95,16 +70,29 @@
             </div>
           </div>
         </form>
+
+        <div v-show="isWeatherReportOpen">
+          <WeatherReport
+            v-if="this.location && this.current && this.forecast"
+            :country="this.location.country"
+            :city="this.location.name"
+            :temperature="this.current.temp_c"
+            :morning="this.forecast[0].hour[5].temp_c"
+            :noon="this.forecast[0].hour[11].temp_c"
+            :afternoon="this.forecast[0].hour[15].temp_c"
+            :night="this.forecast[0].hour[19].temp_c"
+          ></WeatherReport>
+        </div>
       </div>
       <div class="col-md-4">
         <img src="../assets/beach_650x450.jpg" width="100%" height="400" />
       </div>
     </div>
-
   </div>
 </template>
 
 <script>
+import WeatherReport from "./WeatherReport.vue";
 import HotelDatePicker from "vue-hotel-datepicker";
 import "vue-hotel-datepicker/dist/vueHotelDatepicker.css";
 const moment = require("moment");
@@ -114,6 +102,7 @@ export default {
   name: "FlightBooking",
   components: {
     HotelDatePicker,
+    WeatherReport,
   },
 
   data() {
@@ -163,6 +152,11 @@ export default {
       selectedGoingToKey: null,
       isLeavingSuggestionOpen: false,
       isGoingSuggestionOpen: false,
+      location: null,
+      forecast: null,
+      current: null,
+      isWeatherReportOpen: false,
+      isFlightInformationOpen: false,
     };
   },
 
@@ -207,8 +201,17 @@ export default {
             this.going_to +
             "&aqi=no"
         )
-        .then(function (response) {
+        .then((response) => {
           console.log(response.data);
+
+          // console.log(this.location);
+          // console.log(this.forecast[0].hour[0]);
+          if (response.data.forecast.forecastday.length > 0) {
+            this.current = response.data.current;
+            this.location = response.data.location;
+            this.forecast = response.data.forecast.forecastday;
+            this.isWeatherReportOpen = true;
+          }
         })
         .catch(function (error) {
           console.log(error.message);
@@ -282,7 +285,7 @@ export default {
 
   watch: {
     leaving_from: function (newLeavingFrom, oldLeavingFrom) {
-      if(newLeavingFrom.length >= 1) {
+      if (newLeavingFrom.length >= 1) {
         this.fetchLeavingFromData();
       } else {
         this.leaving_from_api_data = null;
@@ -290,13 +293,13 @@ export default {
     },
 
     going_to: function (newGoingTo, oldGoingTo) {
-      if(newGoingTo.length >= 1) {
+      if (newGoingTo.length >= 1) {
         this.fetchGoingToData();
       } else {
         this.going_to_api_data = null;
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -315,13 +318,13 @@ export default {
 .suggestion-text {
   text-align: justify;
   /* margin-top: 20px;
-  margin-bottom: 20px; */
+margin-bottom: 20px; */
   padding: 0.74rem 0.74rem;
   cursor: pointer;
 }
 
 .suggestion-text:hover {
   background-color: rgb(10, 66, 117);
-  color:#fff;
+  color: #fff;
 }
 </style>
