@@ -4,17 +4,18 @@
       <div class="col-md-8">
         <form @submit.prevent="showData">
           <div class="row">
-            <div class="col-md-3 mb-4">
+            <div class="col-md-4 mb-4">
               <input
                 v-model="leaving_from"
-                @input="checkLeavingFromLength()"
+                
                 type="text"
-                class="form-control align-middle"
+                class="form-control text-left"
                 placeholder="Leaving From"
                 required
                 id="input-field"
               />
-              <table v-show="isLeavingSuggestionOpen">
+              <div>
+              <!-- <table v-show="isLeavingSuggestionOpen">
                 <tr>
                   <td
                     v-for="(value, index) in leaving_from_api_data"
@@ -24,18 +25,30 @@
                     {{ value.name }}
                   </td>
                 </tr>
-              </table>
+              </table> -->
+              
+              </div>
+              <div class="suggestion-div" v-show="isLeavingSuggestionOpen">
+               
+                  <h6 class="suggestion-text"
+                    v-for="(value, index) in leaving_from_api_data"
+                    :key="index"
+                    @click="setLeavingFrom(index)"
+                  >
+                    {{ value.name }}
+                  </h6>
+
+              </div>
             </div>
-            <div class="col-md-3 mb-4">
+            <div class="col-md-4 mb-4">
               <input
                 v-model="going_to"
-                @keyup="checkGoingToLength"
                 type="text"
                 class="form-control"
                 placeholder="Going To"
                 required
               />
-              <table v-show="isGoingSuggestionOpen">
+              <!-- <table v-show="isGoingSuggestionOpen">
                 <tr>
                   <td
                     v-for="(value, index) in going_to_api_data"
@@ -45,9 +58,19 @@
                     {{ value.name }}
                   </td>
                 </tr>
-              </table>
+              </table> -->
+              <div class="suggestion-div" v-show="isGoingSuggestionOpen">
+
+                  <h6 class="suggestion-text"
+                    v-for="(value, index) in going_to_api_data"
+                    :key="index"
+                    @click="setGoingTo(index)"
+                  >
+                    {{ value.name }}
+                  </h6>
+              </div>
             </div>
-            <div class="col-md-4 mb-4">
+            <div class="col-md-3 mb-4 p-0">
               <HotelDatePicker
                 @check-in-changed="checkIn"
                 @check-out-changed="checkOut"
@@ -56,7 +79,7 @@
                 required
               ></HotelDatePicker>
             </div>
-            <div class="col-md-2 mb-4">
+            <div class="col-md-1 mb-4">
               <button
                 type="submit"
                 class="btn btn-primary"
@@ -85,7 +108,7 @@
 import HotelDatePicker from "vue-hotel-datepicker";
 import "vue-hotel-datepicker/dist/vueHotelDatepicker.css";
 const moment = require("moment");
-const axios = require("axios");
+const axios = require("axios").default;
 
 export default {
   name: "FlightBooking",
@@ -144,22 +167,22 @@ export default {
   },
 
   methods: {
-    checkLeavingFromLength() {
-      // console.log(this.leaving_from);
-      if (this.leaving_from.length >= 3) {
-        this.fetchLeavingFromData();
-      } else {
-        this.leaving_from_api_data = null;
-      }
-    },
-    checkGoingToLength() {
-      // console.log(this.leaving_from);
-      if (this.going_to.length >= 3) {
-        this.fetchGoingToData();
-      } else {
-        this.going_to_api_data = null;
-      }
-    },
+    // checkLeavingFromLength() {
+    //   // console.log(this.leaving_from);
+    //   if (this.leaving_from.length >= 3) {
+    //     this.fetchLeavingFromData();
+    //   } else {
+    //     this.leaving_from_api_data = null;
+    //   }
+    // },
+    // checkGoingToLength() {
+    //   // console.log(this.leaving_from);
+    //   if (this.going_to.length >= 3) {
+    //     this.fetchGoingToData();
+    //   } else {
+    //     this.going_to_api_data = null;
+    //   }
+    // },
 
     setLeavingFrom(index) {
       console.log("set leaving from method hits");
@@ -256,11 +279,49 @@ export default {
         });
     },
   },
+
+  watch: {
+    leaving_from: function (newLeavingFrom, oldLeavingFrom) {
+      if(newLeavingFrom.length >= 1) {
+        this.fetchLeavingFromData();
+      } else {
+        this.leaving_from_api_data = null;
+      }
+    },
+
+    going_to: function (newGoingTo, oldGoingTo) {
+      if(newGoingTo.length >= 1) {
+        this.fetchGoingToData();
+      } else {
+        this.going_to_api_data = null;
+      }
+    }
+  }
 };
 </script>
 
 <style>
 .form-control {
   padding: 0.74rem 0.74rem;
+}
+
+.suggestion-div {
+  width: 100%;
+  background-color: #fff;
+  border-radius: 0 0 5px 5px;
+  box-shadow: 0 1px 6px rgb(32 33 36 / 28%);
+}
+
+.suggestion-text {
+  text-align: justify;
+  /* margin-top: 20px;
+  margin-bottom: 20px; */
+  padding: 0.74rem 0.74rem;
+  cursor: pointer;
+}
+
+.suggestion-text:hover {
+  background-color: rgb(10, 66, 117);
+  color:#fff;
 }
 </style>

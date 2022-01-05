@@ -75,7 +75,7 @@
             </ul>
           </li>
           <li class="nav-item">
-            <button class="btn btn-info">Find a Vacation Rental</button>
+            <button class="btn btn-info" style="background-color: #30fff8;">Find a Vacation Rental</button>
           </li>
         </ul>
       </div>
