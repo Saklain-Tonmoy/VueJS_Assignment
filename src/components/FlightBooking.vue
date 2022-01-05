@@ -84,10 +84,32 @@
           ></WeatherReport>
         </div>
 
-        <div >
-          <FlightInfo></FlightInfo>
+        <div v-show="isFlightInformationOpen" class="container-fluid mt-5">
+          <div class="table-responsive">
+            <div class="table">
+              <thead>
+                <th>Flight No</th>
+                <th>Leaving From</th>
+                <th>Going To</th>
+                <th>Departure Time</th>
+                <th>Duration</th>
+                <th>Arrival Time</th>
+                <th>Price</th>
+              </thead>
+              <FlightInfo
+                v-for="flight in this.flightLists"
+                :key="flight.id"
+                :Flight="flight.Flight"
+                :From="flight.Leaving_from"
+                :To="flight.Going_to"
+                :Departure="flight.Departure"
+                :Duration="flight.Duration"
+                :Arrival="flight.Arrival"
+                :Price="flight.Price"
+              ></FlightInfo>
+            </div>
+          </div>
         </div>
-
       </div>
       <div class="col-md-4">
         <img src="../assets/beach_650x450.jpg" width="100%" height="400" />
@@ -104,7 +126,6 @@ import HotelDatePicker from "vue-hotel-datepicker";
 import "vue-hotel-datepicker/dist/vueHotelDatepicker.css";
 const moment = require("moment");
 const axios = require("axios").default;
-const fs = require("fs");
 
 export default {
   name: "FlightBooking",
@@ -208,7 +229,7 @@ export default {
       axios
         .get(
           "https://api.weatherapi.com/v1/forecast.json?key=18163b2b531c4d2097941247212912&q=" +
-            this.going_to +
+            this.going_to.split(",")[0] +
             "&aqi=no"
         )
         .then((response) => {
@@ -221,6 +242,7 @@ export default {
             this.location = response.data.location;
             this.forecast = response.data.forecast.forecastday;
             this.isWeatherReportOpen = true;
+            this.isFlightInformationOpen = true;
             console.log(this.flightLists);
           }
         })
