@@ -2,7 +2,7 @@
   <div class="container-fluid mt-5">
     <div class="row">
       <div class="col-md-8">
-        <form @submit.prevent="showData">
+        <form @submit.prevent="handleFormSubmit">
           <div class="row">
             <div class="col-md-4 mb-4">
               <input
@@ -83,6 +83,11 @@
             :night="this.forecast[0].hour[19].temp_c"
           ></WeatherReport>
         </div>
+
+        <div >
+          <FlightInfo></FlightInfo>
+        </div>
+
       </div>
       <div class="col-md-4">
         <img src="../assets/beach_650x450.jpg" width="100%" height="400" />
@@ -93,16 +98,20 @@
 
 <script>
 import WeatherReport from "./WeatherReport.vue";
+import FlightInfo from "./FlightInfo.vue";
+import FileData from "../data/flight-info.json";
 import HotelDatePicker from "vue-hotel-datepicker";
 import "vue-hotel-datepicker/dist/vueHotelDatepicker.css";
 const moment = require("moment");
 const axios = require("axios").default;
+const fs = require("fs");
 
 export default {
   name: "FlightBooking",
   components: {
     HotelDatePicker,
     WeatherReport,
+    FlightInfo,
   },
 
   data() {
@@ -157,6 +166,7 @@ export default {
       current: null,
       isWeatherReportOpen: false,
       isFlightInformationOpen: false,
+      flightLists: FileData,
     };
   },
 
@@ -190,7 +200,7 @@ export default {
       this.isGoingSuggestionOpen = false;
     },
 
-    showData() {
+    handleFormSubmit() {
       console.log(
         "Leaving From: " + this.leaving_from + " Going to: " + this.going_to
       );
@@ -211,6 +221,7 @@ export default {
             this.location = response.data.location;
             this.forecast = response.data.forecast.forecastday;
             this.isWeatherReportOpen = true;
+            console.log(this.flightLists);
           }
         })
         .catch(function (error) {
