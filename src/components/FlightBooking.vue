@@ -21,7 +21,7 @@
                   :key="index"
                   @click="setLeavingFrom(index)"
                 >
-                  {{ value.name }}
+                  {{ value.city }}, {{value.name}}
                 </h6>
               </div>
             </div>
@@ -41,7 +41,7 @@
                   :key="index"
                   @click="setGoingTo(index)"
                 >
-                  {{ value.name }}
+                  {{ value.city }}, {{ value.name }}
                 </h6>
               </div>
             </div>
@@ -76,7 +76,8 @@
             v-if="this.location && this.current && this.forecast"
             :country="this.location.country"
             :city="this.location.name"
-            :temperature="this.current.temp_c"
+            :date="this.forecast[0].date"
+            :temperature="this.forecast[0].day.avgtemp_c"
             :morning="this.forecast[0].hour[5].temp_c"
             :noon="this.forecast[0].hour[11].temp_c"
             :afternoon="this.forecast[0].hour[15].temp_c"
@@ -86,28 +87,31 @@
 
         <div v-show="isFlightInformationOpen" class="container-fluid mt-5">
           <div class="table-responsive">
-            <div class="table">
+            <table class="table">
               <thead>
                 <th>Flight No</th>
                 <th>Leaving From</th>
                 <th>Going To</th>
+                <th>Departure Date</th>
                 <th>Departure Time</th>
-                <th>Duration</th>
+                <!-- <th>Duration</th> -->
+                <th>Arrival Date</th>
                 <th>Arrival Time</th>
                 <th>Price</th>
               </thead>
               <FlightInfo
-                v-for="flight in this.flightLists"
+                v-for="flight in this.availableFlights"
                 :key="flight.id"
-                :Flight="flight.Flight"
-                :From="flight.Leaving_from"
-                :To="flight.Going_to"
-                :Departure="flight.Departure"
-                :Duration="flight.Duration"
-                :Arrival="flight.Arrival"
-                :Price="flight.Price"
+                :flightId="flight.id"
+                :from="flight.from"
+                :to="flight.to"
+                :departureDate="flight.departuredate"
+                :departureTime="flight.departuretime"
+                :arrivalDate="flight.arrivaldate"
+                :arrivalTime="flight.arrivaltime"
+                :price="flight.fair"
               ></FlightInfo>
-            </div>
+            </table>
           </div>
         </div>
       </div>
@@ -126,6 +130,16 @@ import HotelDatePicker from "vue-hotel-datepicker";
 import "vue-hotel-datepicker/dist/vueHotelDatepicker.css";
 const moment = require("moment");
 const axios = require("axios").default;
+
+// calculating today's date
+const todayInMilliseconds = new Date();
+const today = todayInMilliseconds.toISOString().slice(0, 10);
+console.log(today);
+
+// calculating the date SIX days ago from today
+const oneDayInMilliseconds = 86400000; //number of milliseconds in a day
+const sixDaysAgo = new Date(todayInMilliseconds - 6 * oneDayInMilliseconds).toISOString().slice(0, 10);
+console.log(sixDaysAgo);
 
 export default {
   name: "FlightBooking",
@@ -171,15 +185,15 @@ export default {
       },
 
       leaving_from: "",
+      leaving_from_code: "",
       going_to: "",
+      going_to_code: "",
       date: {
         checkInDate: null,
         checkOutDate: null,
       },
       leaving_from_api_data: null,
       going_to_api_data: null,
-      selectedLeavingFromKey: null,
-      selectedGoingToKey: null,
       isLeavingSuggestionOpen: false,
       isGoingSuggestionOpen: false,
       location: null,
@@ -188,36 +202,23 @@ export default {
       isWeatherReportOpen: false,
       isFlightInformationOpen: false,
       flightLists: FileData,
+      availableFlights: null,
     };
   },
 
   methods: {
-    // checkLeavingFromLength() {
-    //   // console.log(this.leaving_from);
-    //   if (this.leaving_from.length >= 3) {
-    //     this.fetchLeavingFromData();
-    //   } else {
-    //     this.leaving_from_api_data = null;
-    //   }
-    // },
-    // checkGoingToLength() {
-    //   // console.log(this.leaving_from);
-    //   if (this.going_to.length >= 3) {
-    //     this.fetchGoingToData();
-    //   } else {
-    //     this.going_to_api_data = null;
-    //   }
-    // },
 
     setLeavingFrom(index) {
       console.log("set leaving from method hits");
-      this.leaving_from = this.leaving_from_api_data[index].name;
+      this.leaving_from =this.leaving_from_api_data[index].city + ", " + this.leaving_from_api_data[index].name;
+      this.leaving_from_code = this.leaving_from_api_data[index].iata;
       this.isLeavingSuggestionOpen = false;
     },
 
     setGoingTo(index) {
       console.log("set Going To method hits");
-      this.going_to = this.going_to_api_data[index].name;
+      this.going_to = this.going_to_api_data[index].city + ", " + this.going_to_api_data[index].name;
+      this.going_to_code = this.going_to_api_data[index].iata;
       this.isGoingSuggestionOpen = false;
     },
 
@@ -226,30 +227,66 @@ export default {
         "Leaving From: " + this.leaving_from + " Going to: " + this.going_to
       );
 
+      this.fetchWeatherInformation();
+      this.fetchFlightInformation();
+      
+    },
+
+    fetchWeatherInformation() {
+      var options = {
+        method: 'GET',
+        url: 'https://weatherapi-com.p.rapidapi.com/forecast.json',
+        params: {q: this.going_to.split(",")[0].toString(), days: '10', dt: this.date.checkInDate.toString()},
+        headers: {
+          'x-rapidapi-host': 'weatherapi-com.p.rapidapi.com',
+          'x-rapidapi-key': '8c6e411520msh36e4789b66bb238p1dda12jsn11996763c0d8'
+        }
+      };
+
       axios
-        .get(
-          "https://api.weatherapi.com/v1/forecast.json?key=18163b2b531c4d2097941247212912&q=" +
-            this.going_to.split(",")[0] +
-            "&aqi=no"
-        )
+        .request(options)
         .then((response) => {
           console.log(response.data);
 
-          // console.log(this.location);
-          // console.log(this.forecast[0].hour[0]);
           if (response.data.forecast.forecastday.length > 0) {
             this.current = response.data.current;
             this.location = response.data.location;
             this.forecast = response.data.forecast.forecastday;
             this.isWeatherReportOpen = true;
-            this.isFlightInformationOpen = true;
-            console.log(this.flightLists);
+            // this.isFlightInformationOpen = true;
+            // console.log(this.flightLists);
           }
         })
         .catch(function (error) {
           console.log(error.message);
         });
     },
+
+    fetchFlightInformation() {
+      console.log(this.going_to_code.toString().toUpperCase());
+      console.log(this.leaving_from_code.toString().toUpperCase());
+      console.log(this.date.checkInDate);
+      console.log(this.date.checkOutDate);
+      console.log(this.flightLists[0].departuredate);
+      var data = new Array();
+      console.log(data);
+      for(var i in this.flightLists) {
+        // console.log(this.flightLists[i]);
+        if((this.flightLists[i].airportcode == this.leaving_from_code) && (this.flightLists[i].departuredate == this.date.checkInDate) && (this.flightLists[i].to == this.going_to_code)) {
+          data.push(this.flightLists[i]);
+        } else {
+          continue;
+        }
+
+      }
+      if(data.length > 0) {
+        this.availableFlights = data;
+        this.isFlightInformationOpen = true;
+      } else {
+        console.log("No flight available.");
+      }
+    },
+
     showDate() {
       console.log(
         "Check-In date : " +
@@ -350,8 +387,6 @@ export default {
 
 .suggestion-text {
   text-align: justify;
-  /* margin-top: 20px;
-margin-bottom: 20px; */
   padding: 0.74rem 0.74rem;
   cursor: pointer;
 }

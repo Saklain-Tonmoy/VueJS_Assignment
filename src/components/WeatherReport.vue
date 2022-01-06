@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid gradient-custom p-5">
+  <div class="container-fluid gradient-custom p-3">
     <div
       class="
         container
@@ -15,6 +15,7 @@
           <strong>{{ temperature }}</strong>
         </h2>
         <h6 class="text-white mb-0">{{ city }}, {{ country }}</h6>
+        <h6 class="text-white mb-0">{{ date }}</h6>
       </div>
       <div>
         <img
@@ -79,7 +80,7 @@
 
 <script>
 export default {
-  props: ["temperature", "city", "country", "morning", "noon", "afternoon", "night"],
+  props: ["temperature", "city", "country", "date", "morning", "noon", "afternoon", "night"],
 };
 </script>
 

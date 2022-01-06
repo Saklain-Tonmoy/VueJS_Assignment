@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "Flight": "Air-737",
+    "Leaving_from": "Dhaka",
+    "Departure": "10:00 AM",
+    "Duration": "4hr",
+    "Going_to": "Ctg",
+    "Arrival": "02:00 PM",
+    "Price": "4000"
+  },
+  {
+    "id": 2,
+    "Flight": "Air-737",
+    "Leaving_from": "Dhaka",
+    "Departure": "10:00 AM",
+    "Duration": "6hr",
+    "Going_to": "India",
+    "Arrival": "04:00 PM",
+    "Price": "5,000"
+  },
+  {
+    "id": 3,
+    "Flight": "Air-738",
+    "Leaving_from": "usa",
+    "Departure": "10:00 AM",
+    "Duration": "7hr",
+    "Going_to": "Australia",
+    "Arrival": "05:00 PM",
+    "Price": "40,000"
+  },
+  {
+    "id": 4,
+    "Flight": "Air-738",
+    "Leaving_from": "usa",
+    "Departure": "10:00 AM",
+    "Duration": "6hr",
+    "Going_to": "Pakistan",
+    "Arrival": "04:00 PM",
+    "Price": "40,000"
+  }
+]

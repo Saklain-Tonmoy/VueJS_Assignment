@@ -1,0 +1,106 @@
+{
+  "code": "SUCCESS",
+  "message": "Airport found.",
+  "response": [
+    {
+      "city": "Dhaka",
+      "iata": "DAC",
+      "name": "Bangladesh, Hazrat Shahjalal International Airport (DAC)"
+    },
+    {
+      "city": "Dazhou",
+      "iata": "DAX",
+      "name": "China, Dachuan Airport (DAX)"
+    },
+    {
+      "city": "Saranac Lake",
+      "iata": "SLK",
+      "name": "United States, Adirondack Regional Airport (SLK)"
+    },
+    {
+      "city": "Chittagong",
+      "iata": "CGP",
+      "name": "Bangladesh, Shah Amanat International Airport (CGP)"
+    },
+    {
+      "city": "Kolkata",
+      "iata": "CCU",
+      "name": "India, Netaji Subhash Chandra Bose International Airport (CCU)"
+    },
+    {
+      "city": "Coxs Bazar",
+      "iata": "CXB",
+      "name": "Bangladesh, Cox's Bazar Airport (CXB)"
+    },
+    {
+      "city": "Lucknow",
+      "iata": "LKO",
+      "name": "India, Chaudhary Charan Singh International Airport (LKO)"
+    },
+    {
+      "city": "Singapore",
+      "iata": "SIN",
+      "name": "Singapore, Singapore Changi Airport (SIN)"
+    },
+    {
+      "city": "Chisinau",
+      "iata": "KIV",
+      "name": "Moldova, Chi?in?u International Airport (KIV)"
+    },
+    {
+      "city": "Leh",
+      "iata": "IXL",
+      "name": "India, Leh Kushok Bakula Rimpochee Airport (IXL)"
+    },
+    {
+      "city": "Paris",
+      "iata": "PRX",
+      "name": "United States, Cox Field (PRX)"
+    },
+    {
+      "city": "Lansing",
+      "iata": "LAN",
+      "name": "United States, Capital City Airport (LAN)"
+    },
+    {
+      "city": "Dayton",
+      "iata": "DAY",
+      "name": "United States, James M Cox Dayton International Airport (DAY)"
+    },
+    {
+      "city": "Sydney",
+      "iata": "YQY",
+      "name": "Canada, Sydney / J.A. Douglas McCurdy Airport (YQY)"
+    },
+    {
+      "city": "Guangzhou",
+      "iata": "CAN",
+      "name": "China, Guangzhou Baiyun International Airport (CAN)"
+    },
+    {
+      "city": "Saint Catherines",
+      "iata": "YCM",
+      "name": "Canada, Niagara District Airport (YCM)"
+    },
+    {
+      "city": "Madras",
+      "iata": "MAA",
+      "name": "India, Chennai International Airport (MAA)"
+    },
+    {
+      "city": "Akulivik",
+      "iata": "AKV",
+      "name": "Canada, Akulivik Airport (AKV)"
+    },
+    {
+      "city": "Willimantic",
+      "iata": "IJD",
+      "name": "United States, Windham Airport (IJD)"
+    },
+    {
+      "city": "Yenbo",
+      "iata": "YNB",
+      "name": "Saudi Arabia, Prince Abdulmohsin Bin Abdulaziz Airport (YNB)"
+    }
+  ]
+}

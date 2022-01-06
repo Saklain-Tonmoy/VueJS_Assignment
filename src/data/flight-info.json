@@ -1,38 +1,50 @@
 [
-    { "id": 1,
-      "Flight": "Air-737",
-      "Leaving_from": "Dhaka",
-      "Departure": "10:00 AM",
-      "Duration" :"4hr",
-      "Going_to" : "Ctg",
-      "Arrival" : "02:00 PM",
-      "Price"   : "4000"
-    },
-    {   "id": 2,
-        "Flight": "Air-737",
-        "Leaving_from": "Dhaka",
-        "Departure": "10:00 AM",
-        "Duration" :"6hr",
-        "Going_to" : "India",
-        "Arrival" : "04:00 PM",
-        "Price"   : "5,000"
-      },
-      { "id": 3,
-        "Flight": "Air-738",
-        "Leaving_from": "usa",
-        "Departure": "10:00 AM",
-        "Duration" :"7hr",
-        "Going_to" : "Australia",
-        "Arrival": "05:00 PM",
-        "Price"   : "40,000"
-      },
-      { "id": 4,
-        "Flight": "Air-738",
-        "Leaving_from": "usa",
-        "Departure": "10:00 AM",
-        "Duration" :"6hr",
-        "Going_to" : "Pakistan",
-        "Arrival": "04:00 PM",
-        "Price"   : "40,000"
-      }
-  ]
+  {
+    "id": "Air-737",
+    "airportcode": "LAX",
+    "airportname": "Los Angeles",
+    "from": "LAX",
+    "to": "AUS",
+    "departuredate": "2022-01-13",
+    "arrivaldate": "2022-01-13",
+    "departuretime": "1:05 AM",
+    "arrivaltime": "2:05 AM",
+    "fair": "4000"
+  },
+  {
+    "id": "Air-73759",
+    "airportcode": "AUS",
+    "airportname": "Austin",
+    "from": "AUS",
+    "to": "LAX",
+    "departuredate": "2022-01-13",
+    "arrivaldate": "2022-01-13",
+    "departuretime": "11:05 AM",
+    "arrivalTime": "3:05 AM",
+    "fair": "4000"
+  },
+  {
+    "id": "Air-156",
+    "airportcode": "CAL",
+    "airportname": "California",
+    "from": "CAL",
+    "to": "NYC",
+    "departuredate": "2022-01-13",
+    "arrivaldate": "2022-01-13",
+    "departuretime": "10:05 AM",
+    "arrivalTime": "3:05 AM",
+    "fair": "4000"
+  },
+  {
+    "id": "Air-1586",
+    "airportcode": "DAC",
+    "airportname": "Bangladesh, Hazrat Shahjalal International Airport",
+    "from": "DAC",
+    "to": "NYC",
+    "departuredate": "2022-01-13",
+    "arrivaldate": "2022-01-13",
+    "departuretime": "10:05 AM",
+    "arrivaltime": "3:05 AM",
+    "fair": "4000"
+  }
+]
