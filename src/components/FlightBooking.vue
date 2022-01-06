@@ -21,7 +21,7 @@
                   :key="index"
                   @click="setLeavingFrom(index)"
                 >
-                  {{ value.city }}, {{value.name}}
+                  {{ value.city }}, {{ value.name }}
                 </h6>
               </div>
             </div>
@@ -71,54 +71,65 @@
           </div>
         </form>
 
-        <div v-show="isWeatherReportOpen">
-          <WeatherReport
-            v-if="this.location && this.current && this.forecast"
-            :country="this.location.country"
-            :city="this.location.name"
-            :date="this.forecast[0].date"
-            :temperature="this.forecast[0].day.avgtemp_c"
-            :morning="this.forecast[0].hour[5].temp_c"
-            :noon="this.forecast[0].hour[11].temp_c"
-            :afternoon="this.forecast[0].hour[15].temp_c"
-            :night="this.forecast[0].hour[19].temp_c"
-          ></WeatherReport>
-        </div>
-
         <div v-show="isFlightInformationOpen" class="container-fluid mt-5">
-          <div class="table-responsive">
-            <table class="table">
-              <thead>
-                <th>Flight No</th>
-                <th>Leaving From</th>
-                <th>Going To</th>
-                <th>Departure Date</th>
-                <th>Departure Time</th>
-                <!-- <th>Duration</th> -->
-                <th>Arrival Date</th>
-                <th>Arrival Time</th>
-                <th>Price</th>
-              </thead>
-              <FlightInfo
-                v-for="flight in this.availableFlights"
-                :key="flight.id"
-                :flightId="flight.id"
-                :from="flight.from"
-                :to="flight.to"
-                :departureDate="flight.departuredate"
-                :departureTime="flight.departuretime"
-                :arrivalDate="flight.arrivaldate"
-                :arrivalTime="flight.arrivaltime"
-                :price="flight.fair"
-              ></FlightInfo>
-            </table>
-          </div>
-        </div>
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <th>Flight No</th>
+            <th>Leaving From</th>
+            <th>Going To</th>
+            <th>Departure Date</th>
+            <th>Departure Time</th>
+            <!-- <th>Duration</th> -->
+            <th>Arrival Date</th>
+            <th>Arrival Time</th>
+            <th>Price</th>
+          </thead>
+          <tbody>
+            <FlightInfo
+              v-for="flight in this.availableFlights"
+              :key="flight.id"
+              :flightId="flight.id"
+              :from="flight.from"
+              :to="flight.to"
+              :departureDate="flight.departuredate"
+              :departureTime="flight.departuretime"
+              :arrivalDate="flight.arrivaldate"
+              :arrivalTime="flight.arrivaltime"
+              :price="flight.fair"
+            ></FlightInfo>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div v-show="isWeatherReportOpen">
+      <WeatherReport
+        v-if="this.location && this.current && this.forecast"
+        :country="this.location.country"
+        :city="this.location.name"
+        :date="this.forecast[0].date"
+        :temperature="this.forecast[0].day.avgtemp_c"
+        :morning="this.forecast[0].hour[5].temp_c"
+        :noon="this.forecast[0].hour[11].temp_c"
+        :afternoon="this.forecast[0].hour[15].temp_c"
+        :night="this.forecast[0].hour[19].temp_c"
+      ></WeatherReport>
+    </div>
+
+    <div v-show="dataNotFoundOpen" class="gradient-custom p-5 mt-5">
+      <h1 class="text-center text-white">Weather data not found</h1>
+    </div>
+
+
+
       </div>
       <div class="col-md-4">
         <img src="../assets/beach_650x450.jpg" width="100%" height="400" />
       </div>
     </div>
+
+    
   </div>
 </template>
 
@@ -138,7 +149,9 @@ console.log(today);
 
 // calculating the date SIX days ago from today
 const oneDayInMilliseconds = 86400000; //number of milliseconds in a day
-const sixDaysAgo = new Date(todayInMilliseconds - 6 * oneDayInMilliseconds).toISOString().slice(0, 10);
+const sixDaysAgo = new Date(todayInMilliseconds - 6 * oneDayInMilliseconds)
+  .toISOString()
+  .slice(0, 10);
 console.log(sixDaysAgo);
 
 export default {
@@ -203,21 +216,27 @@ export default {
       isFlightInformationOpen: false,
       flightLists: FileData,
       availableFlights: null,
+      dataNotFoundOpen: false,
     };
   },
 
   methods: {
-
     setLeavingFrom(index) {
       console.log("set leaving from method hits");
-      this.leaving_from =this.leaving_from_api_data[index].city + ", " + this.leaving_from_api_data[index].name;
+      this.leaving_from =
+        this.leaving_from_api_data[index].city +
+        ", " +
+        this.leaving_from_api_data[index].name;
       this.leaving_from_code = this.leaving_from_api_data[index].iata;
       this.isLeavingSuggestionOpen = false;
     },
 
     setGoingTo(index) {
       console.log("set Going To method hits");
-      this.going_to = this.going_to_api_data[index].city + ", " + this.going_to_api_data[index].name;
+      this.going_to =
+        this.going_to_api_data[index].city +
+        ", " +
+        this.going_to_api_data[index].name;
       this.going_to_code = this.going_to_api_data[index].iata;
       this.isGoingSuggestionOpen = false;
     },
@@ -227,20 +246,30 @@ export default {
         "Leaving From: " + this.leaving_from + " Going to: " + this.going_to
       );
 
-      this.fetchWeatherInformation();
-      this.fetchFlightInformation();
-      
+      if (this.checkInput()) {
+        this.fetchWeatherInformation();
+        this.fetchFlightInformation();
+      } else {
+        alert("Leaving From and Going To value cannot be same.");
+        this.isWeatherReportOpen = false;
+        this.isFlightInformationOpen = false;
+      }
     },
 
     fetchWeatherInformation() {
       var options = {
-        method: 'GET',
-        url: 'https://weatherapi-com.p.rapidapi.com/forecast.json',
-        params: {q: this.going_to.split(",")[0].toString(), days: '10', dt: this.date.checkInDate.toString()},
+        method: "GET",
+        url: "https://weatherapi-com.p.rapidapi.com/forecast.json",
+        params: {
+          q: this.going_to.split(",")[0].toString(),
+          days: "10",
+          dt: this.date.checkInDate.toString(),
+        },
         headers: {
-          'x-rapidapi-host': 'weatherapi-com.p.rapidapi.com',
-          'x-rapidapi-key': '8c6e411520msh36e4789b66bb238p1dda12jsn11996763c0d8'
-        }
+          "x-rapidapi-host": "weatherapi-com.p.rapidapi.com",
+          "x-rapidapi-key":
+            "8c6e411520msh36e4789b66bb238p1dda12jsn11996763c0d8",
+        },
       };
 
       axios
@@ -248,13 +277,20 @@ export default {
         .then((response) => {
           console.log(response.data);
 
-          if (response.data.forecast.forecastday.length > 0) {
+          if (
+            response.data.forecast.forecastday.length > 0 &&
+            response.data.location.name.toString().toLowerCase() ===
+              this.going_to.split(",")[0].toString().toLowerCase()
+          ) {
             this.current = response.data.current;
             this.location = response.data.location;
             this.forecast = response.data.forecast.forecastday;
             // this.isWeatherReportOpen = true;
             // this.isFlightInformationOpen = true;
             // console.log(this.flightLists);
+          } else {
+            this.dataNotFoundOpen = true;
+            //this.isWeatherReportOpen = false;
           }
         })
         .catch(function (error) {
@@ -268,37 +304,43 @@ export default {
       console.log(this.date.checkInDate);
       console.log(this.date.checkOutDate);
       console.log(this.flightLists[0].departuredate);
-      var data = new Array();
+      let data = new Array();
       console.log(data);
-      for(var i in this.flightLists) {
+      for (let i in this.flightLists) {
         // console.log(this.flightLists[i]);
-        if((this.flightLists[i].airportcode == this.leaving_from_code) && (this.flightLists[i].departuredate == this.date.checkInDate) && (this.flightLists[i].to == this.going_to_code)) {
+        if (
+          this.flightLists[i].airportcode == this.leaving_from_code &&
+          this.flightLists[i].departuredate == this.date.checkInDate &&
+          this.flightLists[i].to == this.going_to_code
+        ) {
           data.push(this.flightLists[i]);
         } else {
           continue;
         }
-
       }
-      if(data.length > 0) {
+      if (data.length > 0) {
         this.availableFlights = data;
         this.isFlightInformationOpen = true;
         this.isWeatherReportOpen = true;
       } else {
-        console.log("No flight available.");
-        this.isWeatherReportOpen = false;
-        this.isFlightInformationOpen = false;
+        console.log("No flight available. Generated dummy data.");
+        this.availableFlights = this.flightLists;
+        this.isWeatherReportOpen = true;
+        this.isFlightInformationOpen = true;
       }
     },
 
-    showDate() {
-      console.log(
-        "Check-In date : " +
-          this.date.checkInDate +
-          " " +
-          "Check-Out date : " +
-          this.date.checkOutDate
-      );
+    checkInput() {
+      if (this.leaving_from === this.going_to) {
+        return false;
+      } else if () {
+        //
+      }
+      else {
+        return true;
+      }
     },
+
     checkIn(val) {
       if (val != null) {
         this.date.checkInDate = moment(val).format("YYYY-MM-DD");
@@ -362,6 +404,9 @@ export default {
         this.fetchLeavingFromData();
       } else {
         this.leaving_from_api_data = null;
+        this.isWeatherReportOpen = false;
+        this.isFlightInformationOpen = false;
+        this.dataNotFoundOpen = false;
       }
     },
 
@@ -370,6 +415,9 @@ export default {
         this.fetchGoingToData();
       } else {
         this.going_to_api_data = null;
+        this.isWeatherReportOpen = false;
+        this.isFlightInformationOpen = false;
+        this.dataNotFoundOpen = false;
       }
     },
   },
@@ -386,16 +434,34 @@ export default {
   background-color: #fff;
   border-radius: 0 0 5px 5px;
   box-shadow: 0 1px 6px rgb(32 33 36 / 28%);
+  max-height: 400px;
+  overflow: auto;
+
 }
 
 .suggestion-text {
   text-align: justify;
   padding: 0.74rem 0.74rem;
   cursor: pointer;
+  border-bottom: 1px solid #ddd;
 }
 
 .suggestion-text:hover {
   background-color: rgb(10, 66, 117);
   color: #fff;
+}
+
+th {
+  padding: 0.75rem 0.75rem;
+}
+
+.gradient-custom {
+  background-color: rgb(3, 62, 97);
+  border-radius: 10px;
+}
+
+.banner {
+  background-image: url('../assets/banner.jpg');
+  min-height: 600px;
 }
 </style>
