@@ -250,7 +250,7 @@ export default {
         this.fetchWeatherInformation();
         this.fetchFlightInformation();
       } else {
-        alert("Leaving From and Going To value cannot be same.");
+        alert("Invalid Input.");
         this.isWeatherReportOpen = false;
         this.isFlightInformationOpen = false;
       }
@@ -333,9 +333,7 @@ export default {
     checkInput() {
       if (this.leaving_from === this.going_to) {
         return false;
-      } else if () {
-        //
-      }
+      } 
       else {
         return true;
       }
