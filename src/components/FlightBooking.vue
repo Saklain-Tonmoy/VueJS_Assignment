@@ -252,7 +252,7 @@ export default {
             this.current = response.data.current;
             this.location = response.data.location;
             this.forecast = response.data.forecast.forecastday;
-            this.isWeatherReportOpen = true;
+            // this.isWeatherReportOpen = true;
             // this.isFlightInformationOpen = true;
             // console.log(this.flightLists);
           }
@@ -282,8 +282,11 @@ export default {
       if(data.length > 0) {
         this.availableFlights = data;
         this.isFlightInformationOpen = true;
+        this.isWeatherReportOpen = true;
       } else {
         console.log("No flight available.");
+        this.isWeatherReportOpen = false;
+        this.isFlightInformationOpen = false;
       }
     },
 
