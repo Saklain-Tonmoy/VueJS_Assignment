@@ -2,7 +2,7 @@
 
 <section class="mt-5">
   <!-- Footer -->
-  <footer class="text-center text-white" style="background-color: #0a4275;">
+  <footer class="text-center text-white footer" style="background-color: #0a4275;">
     <!-- Grid container -->
     <div class="container pt-2 pb-2">
       <!-- Section: Social media -->
@@ -53,5 +53,11 @@ export default {
     border-radius: 50%;
     width: 2.5125rem;
     height: 2.3125rem;
+  }
+
+  .footer {
+    /* position:absolute; */
+    bottom:0;
+    width: 100%;
   }
 </style>

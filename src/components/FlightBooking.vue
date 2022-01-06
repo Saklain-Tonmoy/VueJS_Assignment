@@ -1,4 +1,5 @@
 <template>
+
   <div class="container-fluid mt-5">
     <div class="row">
       <div class="col-md-8">
@@ -80,7 +81,6 @@
             <th>Going To</th>
             <th>Departure Date</th>
             <th>Departure Time</th>
-            <!-- <th>Duration</th> -->
             <th>Arrival Date</th>
             <th>Arrival Time</th>
             <th>Price</th>
@@ -333,7 +333,7 @@ export default {
     checkInput() {
       if (this.leaving_from === this.going_to) {
         return false;
-      } 
+      }
       else {
         return true;
       }
@@ -367,6 +367,7 @@ export default {
             this.isLeavingSuggestionOpen = true;
           } else {
             this.leaving_from_api_data = null;
+            this.isLeavingSuggestionOpen = false;
           }
         })
         .catch(function (error) {
@@ -388,6 +389,7 @@ export default {
             this.isGoingSuggestionOpen = true;
           } else {
             this.going_to_api_data = null;
+            this.isGoingSuggestionOpen = false;
           }
         })
         .catch(function (error) {
@@ -405,6 +407,8 @@ export default {
         this.isWeatherReportOpen = false;
         this.isFlightInformationOpen = false;
         this.dataNotFoundOpen = false;
+        this.isGoingSuggestionOpen = false;
+        this.isLeavingSuggestionOpen = false;
       }
     },
 
@@ -416,6 +420,8 @@ export default {
         this.isWeatherReportOpen = false;
         this.isFlightInformationOpen = false;
         this.dataNotFoundOpen = false;
+        this.isGoingSuggestionOpen = false;
+        this.isLeavingSuggestionOpen = false;
       }
     },
   },
@@ -434,6 +440,8 @@ export default {
   box-shadow: 0 1px 6px rgb(32 33 36 / 28%);
   max-height: 400px;
   overflow: auto;
+  /* position: absolute;
+  z-index: 1900; */
 
 }
 
@@ -462,4 +470,6 @@ th {
   background-image: url('../assets/banner.jpg');
   min-height: 600px;
 }
+
+
 </style>
