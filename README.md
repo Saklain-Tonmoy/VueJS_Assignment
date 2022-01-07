@@ -2,20 +2,57 @@
 
 > Flight booking app using VueJS.
 
-## Build Setup
+# NodeJS Assignment
+NodeJs Assignment for Software Engineer (INTERN), powered by W3Engineers.
 
-``` bash
-# install dependencies
-npm install
+# Project Link
+https://github.com/Saklain-Tonmoy/VueJS_Assignment
 
-# serve with hot reload at localhost:8080
-npm run dev
+# Frontend Framework Used
+* VueJS
 
-# build for production with minification
-npm run build
+# Packages Used
+* Axios
+* Moment Js
+* Vue-Hotel-Datepicker 
 
-# build for production and view the bundle analyzer report
-npm run build --report
+# Description
+It's a basic frontend application using VueJS for flight booking.
+
+# Project Setup
+## Step 1
+At first, download NodeJS stable version from the link below.
+https://nodejs.org/en/download/
+## Step 2
+Please go to the folder where you want to install the application and open the Termial/CMD
+## Step 3
+Type the following command and press enter
+
+```
+git clone https://github.com/Saklain-Tonmoy/NodeJs_Assignment.git
 ```
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+## Step 4
+Please go inside the cloned folder and open the terminal. Then type the following command and press enter
+
+```
+npm install
+```
+
+## Step 5
+And finally, run the application using the following command
+
+```
+npm run dev
+```
+
+## Step 6 
+Open your browser and type the link below
+
+```
+http://localhost:8080/
+```
+
+## Finally, thanks from Saklain Tonmoy :neutral_face:
+
+
