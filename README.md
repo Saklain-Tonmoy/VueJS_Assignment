@@ -29,7 +29,7 @@ https://nodejs.org/en/download/
 Please go to the folder where you want to install the application and open the Termial/CMD. Then type the following command and press enter
 
 ```
-git clone https://github.com/Saklain-Tonmoy/NodeJs_Assignment.git
+git clone https://github.com/Saklain-Tonmoy/VueJS_Assignment.git
 
 ```
 
