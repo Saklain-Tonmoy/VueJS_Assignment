@@ -139,6 +139,7 @@ import FlightInfo from "./FlightInfo.vue";
 import FileData from "../data/flight-info.json";
 import HotelDatePicker from "vue-hotel-datepicker";
 import "vue-hotel-datepicker/dist/vueHotelDatepicker.css";
+import { invalid } from 'moment';
 const moment = require("moment");
 const axios = require("axios").default;
 
@@ -285,16 +286,23 @@ export default {
             this.current = response.data.current;
             this.location = response.data.location;
             this.forecast = response.data.forecast.forecastday;
-            // this.isWeatherReportOpen = true;
+            this.isWeatherReportOpen = true;
             // this.isFlightInformationOpen = true;
             // console.log(this.flightLists);
           } else {
             this.dataNotFoundOpen = true;
-            //this.isWeatherReportOpen = false;
+            this.isWeatherReportOpen = false;
+            // this.isFlightInformationOpen = false;
           }
         })
-        .catch(function (error) {
+        .catch((error) => {
           console.log(error.message);
+          this.current = null;
+          this.location = null;
+          this.forecast = null;
+          this.isWeatherReportOpen = false;
+          this.isFlightInformationOpen = false;
+          alert("Invalid Input");
         });
     },
 
@@ -325,7 +333,7 @@ export default {
       } else {
         console.log("No flight available. Generated dummy data.");
         this.availableFlights = this.flightLists;
-        this.isWeatherReportOpen = true;
+        // this.isWeatherReportOpen = true;
         this.isFlightInformationOpen = true;
       }
     },
@@ -370,8 +378,10 @@ export default {
             this.isLeavingSuggestionOpen = false;
           }
         })
-        .catch(function (error) {
+        .catch((error) => {
           console.log(error);
+          this.leaving_from_api_data = null;
+          this.isLeavingSuggestionOpen = false;
         });
     },
 
@@ -392,7 +402,7 @@ export default {
             this.isGoingSuggestionOpen = false;
           }
         })
-        .catch(function (error) {
+        .catch((error) => {
           console.log(error);
         });
     },
@@ -400,8 +410,11 @@ export default {
 
   watch: {
     leaving_from: function (newLeavingFrom, oldLeavingFrom) {
-      if (newLeavingFrom.length >= 1) {
+      if (newLeavingFrom.length >= 1 && newLeavingFrom != oldLeavingFrom) {
         this.fetchLeavingFromData();
+        this.isFlightInformationOpen = false;
+        this.isWeatherReportOpen = false;
+        this.dataNotFoundOpen = false;
       } else {
         this.leaving_from_api_data = null;
         this.isWeatherReportOpen = false;
@@ -413,8 +426,11 @@ export default {
     },
 
     going_to: function (newGoingTo, oldGoingTo) {
-      if (newGoingTo.length >= 1) {
+      if (newGoingTo.length >= 1 & newGoingTo != oldGoingTo) {
         this.fetchGoingToData();
+        this.isFlightInformationOpen = false;
+        this.isWeatherReportOpen = false;
+        this.dataNotFoundOpen = false;
       } else {
         this.going_to_api_data = null;
         this.isWeatherReportOpen = false;
