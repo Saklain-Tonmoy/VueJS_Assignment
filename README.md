@@ -2,9 +2,6 @@
 
 > Flight booking app using VueJS.
 
-# NodeJS Assignment
-NodeJs Assignment for Software Engineer (INTERN), powered by W3Engineers.
-
 # Project Link
 https://github.com/Saklain-Tonmoy/VueJS_Assignment
 
